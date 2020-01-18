@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <title>Prayer Time</title>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <h1><a href="/">Prayer Time</a></h1>
+        <div class="search-bar">
+          <input placeholder="Country, City" type="search" name="" id="" />
+          <button class="search"><img src="https://img.icons8.com/cotton/64/000000/search--v1.png"></button>
+        </div>
+      </nav>
+    </header>
+    <div class="img-container">
+      <div class="blur"></div>
+      <img src="assets/pictures/waterfall.jpg" alt="image" class="background" />
+    </div>
+    <main>
+      <h1>Prayer Time</h1>
+        
+         <section>
+            <div class="heading-container">
+              <div class="heading">Fajr</div>
+              <div class="heading">Dhuhr</div>
+              <div class="heading">Asr</div>
+              <div class="heading">Maghrib</div>
+              <div class="heading">Isha</div>
+            </div>
+            
+            <div class="timing-container">
+              <div class="fajr timing">Loading...</div>
+              <div class="dhuhr timing">Loading...</div>
+              <div class="asr timing">Loading...</div>
+              <div class="maghrib timing">Loading...</div>
+              <div class="isha timing">Loading...</div>
+            </div>
+         </section>
+
+         <img class="flag" src="" alt="">
+         <span class="countryAndCity"></span>
+         <span class="watch">
+          <div id="MyClockDisplay" class="clock" onload="showTime()"></div>
+         </span>
+    </main>
+    <div class="footer">
+      Image by
+      <a
+        href="https://pixabay.com/users/HoangTuan_photography-12322747/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=4165425"
+        >Tuan Hoang</a
+      >
+      from
+      <a
+        href="https://pixabay.com/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=4165425"
+        >Pixabay</a
+      >
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.1/axios.js" integrity="sha256-J6UlS3kpnhiSiNQ9lGoV9Q94ZpIPff3UZcR0dDwIT6g=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
+    
+    <script type="text/javascript" src="countries.json"></script>
+    <script src="assets/script/app.js"></script>
+  </body>
+</html>
