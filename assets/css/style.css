@@ -154,6 +154,7 @@ section {
   transform: translateX(101%) translateY(100%);
   color: coral;
   font-family: Orbitron;
+  font-size:10px;
 }
 
 @media screen and (min-width: 780px) {
