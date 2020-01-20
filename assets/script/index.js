@@ -37,6 +37,13 @@ searchButton.addEventListener("click", () => {
   showSearchTime();
 });
 
+searchBar.addEventListener("keyup", function(event) {
+  event.preventDefault();
+  if (event.keyCode === 13) {
+    showSearchTime();
+  }
+});
+
 // set time
 const setPrayerTime = (
   Imsak,
@@ -127,61 +134,37 @@ function showSearchTime() {
       .get(
         `https://api.opencagedata.com/geocode/v1/json?q=${searchValue}&key=${opencagedataAPI}`
       )
-      .then(data => {
-        console.log(data);
+      .then(res => {
+        const searchTime = prayTimes.getTimes(
+          date,
+          [res.data.results[0].geometry.lat, res.data.results[0].geometry.lng],
+          "auto",
+          "",
+          "12h"
+        );
+        country = res.data.results[0].components.country;
+        country_code = res.data.results[0].components.country_code;
+        city = res.data.results[0].components.city;
+        flag.setAttribute(
+          "src",
+          `https://www.countryflags.io/${country_code}/flat/64.png`
+        );
+        countryAndCity.innerHTML = city + " - " + country;
+        setPrayerTime(
+          searchTime.imsak,
+          searchTime.fajr,
+          searchTime.sunrise,
+          searchTime.dhuhr,
+          searchTime.asr,
+          searchTime.maghrib,
+          searchTime.isha,
+          searchTime.midnight
+        );
+      })
+      .catch(error => {
+        console.log(error);
+        alert("Sorry we can't find timing for " + searchValue);
       });
   }
-
-  //   } else {
-  //     search = searchValue.split(",");
-  //     country = search[0];
-  //     country = country.charAt(0).toUpperCase() + country.slice(1);
-  //     city = search[1];
-
-  //     axios
-  //       .get(
-  //         `http://api.aladhan.com/v1/timingsByCity?city=${city}&country=${country}&method=8`
-  //       )
-  //       .then(data => {
-  //         axios
-  //           .get(`https://restcountries.eu/rest/v2/name/${country}?fullText=true`)
-  //           .then(data => {
-  //             console.log(data);
-  //             if (city == null) {
-  //               capital = data.data[0].capital;
-  //               countryAndCity.innerHTML = capital + " - " + country;
-  //             } else {
-  //               countryAndCity.innerHTML = city + " - " + country;
-  //             }
-
-  //             flagImg = data.data[0].flag;
-  //             flag.setAttribute("src", flagImg);
-  //           })
-  //           .catch(error => {
-  //             console.log(error);
-  //             flag.setAttribute(
-  //               "src",
-  //               "https://img.icons8.com/dusk/64/000000/remove-image.png"
-  //             );
-  //             countryAndCity.innerHTML = country;
-  //           });
-  //         console.log(data.data.data.timings);
-  //         console.log(data);
-  //         timings = data.data.data.timings;
-  //         prayerTime(
-  //           "-",
-  //           timings.Fajr,
-  //           "-",
-  //           timings.Dhuhr,
-  //           timings.Asr,
-  //           timings.Maghrib,
-  //           timings.Isha,
-  //           "-"
-  //         );
-  //       })
-  //       .catch(error => {
-  //         console.log(error);
-  //         alert("Invalid Input, Try country Name , City Name");
-  //       });
-  //   }
+  // 059 812 5273
 }
