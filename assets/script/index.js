@@ -30,11 +30,23 @@ const flag = document.querySelector(".flag");
 
 // on page load
 window.addEventListener("load", () => {
-  geoFindFromLatAndLong();
+  axios.get(url).then(data => {
+    console.log(data);
+
+    if (data.data == "") {
+      geoFindFromLatAndLong();
+    } else {
+      getPrayerTime(data.data.location.country);
+    }
+  });
 });
 
 searchButton.addEventListener("click", () => {
   showSearchTime();
+});
+
+searchBar.addEventListener("keyup", () => {
+  showSearchTime("false");
 });
 
 searchBar.addEventListener("keyup", function(event) {
@@ -125,46 +137,54 @@ function geoFindFromLatAndLong() {
   }
 }
 
-function showSearchTime() {
+function showSearchTime(e = "true") {
   searchValue = searchBar.value;
   if (searchValue == "") {
-    alert("Please Enter country and city");
+    if (e == "true") {
+      alert("Please Enter country and city");
+    }
   } else {
-    axios
-      .get(
-        `https://api.opencagedata.com/geocode/v1/json?q=${searchValue}&key=${opencagedataAPI}`
-      )
-      .then(res => {
-        const searchTime = prayTimes.getTimes(
-          date,
-          [res.data.results[0].geometry.lat, res.data.results[0].geometry.lng],
-          "auto",
-          "",
-          "12h"
-        );
-        country = res.data.results[0].components.country;
-        country_code = res.data.results[0].components.country_code;
-        city = res.data.results[0].components.city;
-        flag.setAttribute(
-          "src",
-          `https://www.countryflags.io/${country_code}/flat/64.png`
-        );
-        countryAndCity.innerHTML = city + " - " + country;
-        setPrayerTime(
-          searchTime.imsak,
-          searchTime.fajr,
-          searchTime.sunrise,
-          searchTime.dhuhr,
-          searchTime.asr,
-          searchTime.maghrib,
-          searchTime.isha,
-          searchTime.midnight
-        );
-      })
-      .catch(error => {
-        console.log(error);
-        alert("Sorry we can't find timing for " + searchValue);
-      });
+    getPrayerTime(searchValue, e);
   }
   // 059 812 5273
+}
+
+function getPrayerTime(country, e = "true") {
+  axios
+    .get(
+      `https://api.opencagedata.com/geocode/v1/json?q=${country}&key=${opencagedataAPI}`
+    )
+    .then(res => {
+      const searchTime = prayTimes.getTimes(
+        date,
+        [res.data.results[0].geometry.lat, res.data.results[0].geometry.lng],
+        "auto",
+        "",
+        "12h"
+      );
+      country = res.data.results[0].components.country;
+      country_code = res.data.results[0].components.country_code;
+      city = res.data.results[0].components.city;
+      flag.setAttribute(
+        "src",
+        `https://www.countryflags.io/${country_code}/flat/64.png`
+      );
+      countryAndCity.innerHTML = city + " - " + country;
+      setPrayerTime(
+        searchTime.imsak,
+        searchTime.fajr,
+        searchTime.sunrise,
+        searchTime.dhuhr,
+        searchTime.asr,
+        searchTime.maghrib,
+        searchTime.isha,
+        searchTime.midnight
+      );
+    })
+    .catch(error => {
+      console.log(error);
+      if (e == "true") {
+        alert("Sorry we can't find timing for " + searchValue);
+      }
+    });
 }
